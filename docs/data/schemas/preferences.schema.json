@@ -1,0 +1,22 @@
+{
+  "preferences": {
+    "required_fields": ["language"],
+    "fields": {
+      "language": "str:zh-CN|en|ja|ko|other",
+      "target_roles": "list<str>",
+      "target_regions": "list<str>",
+      "salary_expectation": "{amount:int,currency:str,period:str:monthly|annual}",
+      "city_preference": "str",
+      "willing_to_relocate": "bool",
+      "visa_status": "str",
+      "company_size_preference": "str:startup|mid|large|any",
+      "overtime_tolerance": "str:none|some|high",
+      "notice_period_days": "int",
+      "dealbreakers": "list<str>",
+      "job_freshness_days": "int",
+      "preferred_platforms": "list<str>",
+      "dream_companies": "list<str>",
+      "timeline": "str"
+    }
+  }
+}

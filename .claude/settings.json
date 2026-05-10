@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(f:/claude/aijob/**)",
+      "Write(f:/claude/aijob/**)",
+      "Bash(python f:/claude/aijob/scripts/**)",
+      "Glob(f:/claude/aijob/**)",
+      "Grep(f:/claude/aijob/**)",
+      "WebSearch",
+      "WebFetch"
+    ]
+  }
+}

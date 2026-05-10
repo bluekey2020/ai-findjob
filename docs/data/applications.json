@@ -1,0 +1,45 @@
+{
+  "applications": [],
+  "stats": {
+    "total": 0,
+    "applied": 0,
+    "interviewing": 0,
+    "offered": 0,
+    "rejected": 0
+  },
+  "pipeline_progress": {
+    "current_phase": "Phase 3",
+    "phase_0_completed": true,
+    "phase_1_completed": true,
+    "phase_2_completed": true,
+    "phase_3_completed": true,
+    "phase_4_ready": true,
+    "phase_5_ready": false,
+    "phase_3_artifacts": {
+      "tailored_resumes": [
+        "docs/resume/tailored-alibaba-lowcode.md",
+        "docs/resume/tailored-bytedance-feishu.md",
+        "docs/resume/tailored-tencent-cloud.md",
+        "docs/resume/tailored-tencent-tech-platform.md",
+        "docs/resume/tailored-webank-visual.md"
+      ],
+      "cover_letters": [
+        "docs/cover-letters/alibaba-lowcode.md",
+        "docs/cover-letters/bytedance-feishu.md",
+        "docs/cover-letters/tencent-cloud.md",
+        "docs/cover-letters/tencent-tech-platform.md",
+        "docs/cover-letters/webank-visual.md"
+      ],
+      "networking_strategies": [
+        "docs/networking/strategy-alibaba.md",
+        "docs/networking/strategy-bytedance.md",
+        "docs/networking/strategy-tencent-internal.md",
+        "docs/networking/strategy-webank.md"
+      ]
+    },
+    "next_action": "用户审阅定制材料后手动投递，或收到面试邀请后触发 Phase 4"
+  },
+  "metadata": {
+    "last_updated": "2026-05-06T23:00:00"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "feedback_events": {
+    "required_fields": ["events"],
+    "fields": {
+      "events": "list<{id:str,type:str:interview_failure|application_rejected|offer_declined|offer_accepted|interview_success,timestamp:str,phase:str:1|2|3|4|5,source_company:str,source_role:str,reason:str,lessons:list<str>,updates_triggered:list<{target_entity:str:profile|preferences|skills,target_field:str,old_value:str,new_value:str}>,status:str:pending|applied|dismissed}>",
+      "stats": "{total_events:int,applied_improvements:int,decline_rate:float}"
+    }
+  }
+}

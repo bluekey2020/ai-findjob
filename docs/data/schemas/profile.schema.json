@@ -1,0 +1,15 @@
+{
+  "profile": {
+    "required_fields": ["basics.name"],
+    "fields": {
+      "basics": { "name": "str", "email": "str", "phone": "str", "location": "str", "city": "str", "country": "str" },
+      "summary": "str",
+      "skills": "list<{name:str,level:str,years:int,category:str}>",
+      "work_experience": "list<{company:str,title:str,start_date:str,end_date:str}>",
+      "education": "list<{school:str,degree:str,field:str,graduation:str}>",
+      "projects": "list<{name:str,description:str,url:str}>",
+      "languages": "list<{name:str,proficiency:str}>",
+      "certifications": "list<str>"
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//f/claude/tmp/**)",
+      "Bash(python png_info.py)",
+      "Bash(ls -la .gitignore)",
+      "Bash(cat .gitignore)",
+      "Bash(python scripts/data-layer.py view preferences)",
+      "Bash(python scripts/data-layer.py view profile)",
+      "Bash(python scripts/data-layer.py validate profile)",
+      "Bash(python scripts/data-layer.py view dashboard)",
+      "Bash(python scripts/data-layer.py read preferences)",
+      "Bash(python scripts/data-layer.py view jobs)",
+      "Bash(python scripts/data-layer.py validate jobs)",
+      "Bash(python scripts/data-layer.py validate preferences)",
+      "Bash(git *)",
+      "Bash(pip install *)",
+      "Bash(python -m pip install fastapi uvicorn sqlalchemy alembic aiosqlite pydantic pydantic-settings \"python-jose[cryptography]\" passlib python-multipart \"celery[redis]\" redis httpx anthropic)",
+      "Bash(npm install *)",
+      "Bash(timeout 10 python -m uvicorn app.main:app --host 0.0.0.0 --port 8000)",
+      "Bash(rm -f aijob.db)",
+      "Bash(timeout 12 python -m uvicorn app.main:app --host 0.0.0.0 --port 8000)",
+      "Bash(python scripts/seed.py)",
+      "Bash(npx vite *)",
+      "Bash(python -c \"from app.main import app; print\\('Backend imports OK'\\)\")",
+      "Bash(python -c \"from app.main import app; print\\('OK: app imported successfully'\\); print\\('Routes:', [r.path for r in app.routes if hasattr\\(r, 'path'\\)]\\)\")",
+      "Bash(python -c ' *)",
+      "Bash(python -c \"from app.main import app; print\\('OK v0.5.0'\\); print\\(len\\([r for r in app.routes if hasattr\\(r,'methods'\\)]\\), 'endpoints'\\)\")",
+      "Bash(python -c \"from app.main import app; print\\('OK v1.0.0'\\); print\\(len\\([r for r in app.routes if hasattr\\(r,'methods'\\)]\\), 'endpoints total'\\)\")",
+      "Bash(python -m pytest tests/ -v)",
+      "Bash(python -c \"from app.main import app; print\\(f'Routes: {len\\(app.routes\\)}'\\); [print\\(f'  {r.methods} {r.path}'\\) for r in app.routes if hasattr\\(r, 'methods'\\) and r.methods]\")",
+      "Bash(pip list *)",
+      "Bash(python -c \"import fastapi; print\\('fastapi OK'\\)\")",
+      "Bash(python -c \"from app.main import app; print\\('FastAPI app loaded successfully'\\); print\\('Routes:'\\); [print\\(f'  {r.methods} {r.path}'\\) for r in app.routes if hasattr\\(r, 'methods'\\)]\")",
+      "Bash(python -c \"from app.main import app; print\\(f'OK: {len\\([r for r in app.routes if hasattr\\(r,\\\\\"methods\\\\\"\\)]\\)} endpoints loaded'\\)\")",
+      "Bash(timeout 8 python -m uvicorn app.main:app --host 0.0.0.0 --port 8000)",
+      "Bash(python F:/claude/aijob/scripts/data-layer.py)"
+    ]
+  }
+}

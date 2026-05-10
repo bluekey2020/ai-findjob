@@ -1,0 +1,192 @@
+{
+  "basics": {
+    "name": "张三",
+    "email": "zhangsan@example.com",
+    "phone": "138-0000-0001",
+    "location": "深圳",
+    "city": "深圳",
+    "country": "中国",
+    "years_of_experience": 5,
+    "current_role": "高级前端工程师",
+    "current_company": "腾讯"
+  },
+  "summary": "5年经验的高级前端工程师，目前在腾讯负责云控制台架构设计。核心竞争力在前端架构和性能优化方向——主导微前端架构落地、大型中后台性能优化。兼具React和Vue深入使用经验，近期主攻React+TypeScript技术栈。产品思维导向，不只关心技术实现，更关注技术方案对业务目标的支撑。维护2.3k Stars的开源电子书阅读器项目和5000+周活的开发者工具扩展。",
+  "highlights": [
+    "主导腾讯云控制台微前端架构重构，6个子应用解耦，构建时间缩短40%（8分钟→4.5分钟）",
+    "推动E2E测试覆盖率从0提升至85%，建立前端编码规范",
+    "设计基于JSON Schema的动态表单引擎，运营配置效率提升3倍",
+    "商品管理模块首屏加载性能优化提升60%（Vue 3 + Pinia重构）",
+    "开源项目OpenBook获2.3k GitHub Stars",
+    "Chrome扩展DevTools-Kit周活用户5000+，Manifest V3架构",
+    "指导3名初级工程师，具备Tech Lead经验",
+    "经历过jQuery→React、Vue 2→React 18两次大型技术栈迁移",
+    "多语言方案覆盖东南亚7个国家和地区（Shopee）"
+  ],
+  "gaps": [
+    "缺少GitHub主页/个人站点/社交链接，不利于招聘方进一步了解",
+    "开源项目缺少具体下载量或npm包数据",
+    "工作经历缺少可量化的业务指标影响（如营收贡献、用户增长、成本节约）",
+    "描述多为技术输出，缺少团队协作/跨部门沟通方面内容",
+    "缺少领导力或管理类经验描述（团队规模、预算、决策权）",
+    "技能列表中部分工具的年限可进一步明确",
+    "腾讯经历中未提及团队规模和跨团队协作细节"
+  ],
+  "target_roles": [
+    "高级前端工程师",
+    "前端架构师"
+  ],
+  "skills": [
+    { "name": "React", "level": "expert", "years": 5, "category": "前端框架" },
+    { "name": "Vue 3", "level": "advanced", "years": 3, "category": "前端框架" },
+    { "name": "Next.js", "level": "intermediate", "years": 2, "category": "前端框架" },
+    { "name": "TypeScript", "level": "expert", "years": 5, "category": "语言" },
+    { "name": "Tailwind CSS", "level": "advanced", "years": 3, "category": "样式方案" },
+    { "name": "CSS Modules", "level": "advanced", "years": 4, "category": "样式方案" },
+    { "name": "Styled Components", "level": "advanced", "years": 3, "category": "样式方案" },
+    { "name": "Zustand", "level": "advanced", "years": 2, "category": "状态管理" },
+    { "name": "Redux Toolkit", "level": "expert", "years": 4, "category": "状态管理" },
+    { "name": "Pinia", "level": "advanced", "years": 2, "category": "状态管理" },
+    { "name": "Vite", "level": "advanced", "years": 2, "category": "构建工具" },
+    { "name": "Webpack", "level": "expert", "years": 5, "category": "构建工具" },
+    { "name": "Turbopack", "level": "beginner", "years": 1, "category": "构建工具" },
+    { "name": "Vitest", "level": "advanced", "years": 2, "category": "测试" },
+    { "name": "Playwright", "level": "advanced", "years": 2, "category": "测试" },
+    { "name": "Cypress", "level": "intermediate", "years": 2, "category": "测试" },
+    { "name": "Node.js", "level": "advanced", "years": 3, "category": "后端" },
+    { "name": "Express", "level": "intermediate", "years": 3, "category": "后端" },
+    { "name": "Prisma", "level": "intermediate", "years": 2, "category": "后端" },
+    { "name": "PostgreSQL", "level": "intermediate", "years": 2, "category": "后端" },
+    { "name": "Docker", "level": "intermediate", "years": 2, "category": "DevOps" },
+    { "name": "GitHub Actions", "level": "advanced", "years": 2, "category": "DevOps" },
+    { "name": "Nginx", "level": "intermediate", "years": 2, "category": "DevOps" },
+    { "name": "Figma", "level": "intermediate", "years": 3, "category": "设计工具" },
+    { "name": "Sketch", "level": "intermediate", "years": 2, "category": "设计工具" }
+  ],
+  "work_experience": [
+    {
+      "company": "腾讯",
+      "title": "高级前端工程师",
+      "start_date": "2023.03",
+      "end_date": "至今",
+      "description": "负责腾讯云控制台前端架构重构，从Vue 2迁移到React 18 + TypeScript。主导设计微前端架构（Module Federation + qiankun），将6个子应用解耦实现独立部署，构建时间缩短40%（8分钟→4.5分钟）。搭建组件库团队，基于Radix UI封装50+业务组件，覆盖3个产品线。推动E2E测试建设（Playwright），核心流程覆盖率从0提升到85%。指导3名初级工程师，制定前端编码规范和技术评审流程。",
+      "highlights": [
+        "微前端架构落地，6个子应用独立部署",
+        "构建时间缩短40%（8分钟→4.5分钟）",
+        "E2E测试覆盖率从0提升至85%",
+        "基于Radix UI封装50+业务组件，覆盖3个产品线",
+        "指导3名初级工程师，制定编码规范",
+        "部署频率从周2次提升到日3-4次"
+      ],
+      "tech_stack": ["React 18", "TypeScript", "Module Federation", "qiankun", "Playwright", "Radix UI"],
+      "role": "前端架构师 / Tech Lead"
+    },
+    {
+      "company": "字节跳动",
+      "title": "前端工程师",
+      "start_date": "2021.06",
+      "end_date": "2023.02",
+      "description": "参与抖音电商后台管理系统的开发与维护。使用Vue 3 + Pinia重构商品管理模块，首屏加载性能提升60%。设计基于JSON Schema的动态表单引擎，将运营配置效率提升3倍，新建活动上线周期从3天缩短到半天，方案被3个其他业务线复用。负责前端监控系统搭建（Sentry + 自研埋点）。",
+      "highlights": [
+        "商品管理模块首屏加载提升60%",
+        "动态表单引擎使运营效率提升3倍",
+        "新建活动上线周期从3天缩短至半天",
+        "方案被3个其他业务线复用",
+        "自研前端监控体系（Sentry + 埋点）"
+      ],
+      "tech_stack": ["Vue 3", "Pinia", "JSON Schema", "Element Plus", "Sentry"],
+      "role": "核心开发者"
+    },
+    {
+      "company": "Shopee",
+      "title": "前端开发工程师",
+      "start_date": "2019.07",
+      "end_date": "2021.05",
+      "description": "负责卖家中心核心页面的开发与迭代。开发多语言支持方案，覆盖东南亚7个国家和地区。参与从jQuery到React的技术栈迁移，是团队前端现代化改造的核心成员。优化Webpack构建配置，CI/CD时间减少35%。",
+      "highlights": [
+        "多语言方案覆盖东南亚7个市场",
+        "CI/CD构建时间减少35%",
+        "主导jQuery→React技术栈迁移"
+      ],
+      "tech_stack": ["React", "jQuery", "Webpack", "Node.js"],
+      "role": "前端开发工程师"
+    }
+  ],
+  "education": [
+    {
+      "school": "深圳大学",
+      "degree": "本科",
+      "field": "计算机科学与技术",
+      "graduation": "2019.06",
+      "gpa": "3.7/4.0",
+      "honors": ["校级优秀毕业生"]
+    }
+  ],
+  "projects": [
+    {
+      "name": "OpenBook — 开源电子书阅读器",
+      "description": "基于Electron + React的跨平台开源电子书阅读器。支持EPUB/PDF/Markdown多格式渲染引擎。采用大文件PDF分片渲染策略，100MB+文件无卡顿。使用Web Worker处理文档解析，主线程零阻塞。自研注释系统支持高亮和笔记导出到Notion/Flomo。基于CRDT的注释同步方案（开发中）。社区贡献30+阅读主题。",
+      "url": "github.com/zhangsan/openbook",
+      "highlights": [
+        "GitHub 2.3k Stars",
+        "100MB+ PDF分片渲染无卡顿",
+        "Web Worker零阻塞文档解析",
+        "30+社区阅读主题",
+        "CRDT注释同步方案（开发中）"
+      ],
+      "role": "独立开发者",
+      "tech_stack": ["Electron", "React", "TypeScript", "IndexedDB", "Web Workers"],
+      "duration": "2022.06 - 至今"
+    },
+    {
+      "name": "DevTools-Kit — 前端开发者工具集",
+      "description": "Chrome扩展程序（Manifest V3），集成15+常用开发工具：正则测试器、JSON格式化与校验、颜色选择器、Base64/URL编解码、时间戳转换、JWT解析、二维码生成、文本差异对比、Markdown实时预览、CSS生成器、SQL格式化、IP查询与CIDR计算、UUID生成、Cron解析、Hash计算。集成Monaco Editor提供类IDE编辑体验。本地优先架构，所有数据存储在localStorage，无隐私泄露风险。",
+      "url": "",
+      "highlights": [
+        "周活用户5000+",
+        "集成15+开发工具",
+        "Manifest V3 + Service Worker架构",
+        "Monaco Editor类IDE编辑体验",
+        "本地优先，零数据外泄"
+      ],
+      "role": "独立开发者",
+      "tech_stack": ["Chrome Extension MV3", "React", "Monaco Editor"],
+      "duration": "2023.03 - 至今"
+    },
+    {
+      "name": "腾讯云控制台 — 微前端架构重构",
+      "description": "主导6个子应用的微前端架构重构，统一技术栈（Vue 2→React 18），实现独立部署和故障隔离。使用Module Federation和qiankun。构建时间从平均8分钟降至4.5分钟（降幅40%），部署频率从周2次提升到日3-4次。子应用间实现故障隔离，单个崩溃不影响整体。",
+      "url": "",
+      "highlights": [
+        "构建时间↓40%（8min→4.5min）",
+        "部署频率周2次→日3-4次",
+        "子应用故障隔离",
+        "Vue 2→React 18全量迁移"
+      ],
+      "role": "前端架构师 / Tech Lead",
+      "tech_stack": ["React 18", "TypeScript", "Module Federation", "qiankun"],
+      "duration": "2023.03 - 至今"
+    },
+    {
+      "name": "抖音电商后台 — 动态表单引擎",
+      "description": "基于JSON Schema的配置驱动表单引擎，解决30+种不同表单布局的维护问题。提供可视化拖拽表单搭建器（内部工具），支持20+字段类型和自定义校验规则。配置即生效，无需发版。",
+      "url": "",
+      "highlights": [
+        "运营配置效率提升3倍",
+        "新活动上线周期3天→半天",
+        "被3个其他业务线复用"
+      ],
+      "role": "核心开发者",
+      "tech_stack": ["Vue 3", "Pinia", "JSON Schema", "Element Plus"],
+      "duration": "2022.03 - 2023.02"
+    }
+  ],
+  "languages": [
+    { "name": "中文", "proficiency": "母语" },
+    { "name": "英语", "proficiency": "CET-6，能流畅阅读英文文档和技术交流" }
+  ],
+  "certifications": [],
+  "metadata": {
+    "created_at": "2026-05-06T22:00:00",
+    "updated_at": "2026-05-06T22:01:00"
+  }
+}

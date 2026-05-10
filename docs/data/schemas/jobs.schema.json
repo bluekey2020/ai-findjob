@@ -1,0 +1,10 @@
+{
+  "jobs": {
+    "required_fields": ["jobs"],
+    "fields": {
+      "jobs": "list<{id:str,title:str,company:str,location:str,region:str,url:str,platform:str,salary_range:str,description:str,requirements:list<str>,posted_date:str,discovered_date:str,source:str,score:int,fraud_score:int,status:str:new|saved|applied|rejected|expired,tags:list<str>}>",
+      "top_picks": "list<str>",
+      "metadata": "{last_updated:str,total_count:int}"
+    }
+  }
+}

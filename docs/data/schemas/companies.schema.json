@@ -1,0 +1,9 @@
+{
+  "companies": {
+    "required_fields": ["companies"],
+    "fields": {
+      "companies": "list<{id:str,name:str,industry:str,size:str,location:str,website:str,tech_stack:list<str>,culture_summary:str,financial_health:str:healthy|stable|at_risk|unknown,risk_signals:list<str>,opportunity_signals:list<str>,key_contacts:list<{name:str,title:str,linkedin:str}>,notes:str}>",
+      "metadata": "{last_updated:str,total_count:int}"
+    }
+  }
+}

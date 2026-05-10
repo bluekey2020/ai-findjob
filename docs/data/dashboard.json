@@ -1,0 +1,28 @@
+{
+  "stats": {
+    "total_jobs_discovered": 20,
+    "total_applied": 0,
+    "total_interviews": 0,
+    "total_offers": 0,
+    "current_phase": "3",
+    "days_active": 0,
+    "avg_match_score": 87
+  },
+  "funnel": {
+    "discovered": 20,
+    "screened": 20,
+    "shortlisted": 7,
+    "applied": 0,
+    "phone_screen": 0,
+    "technical": 0,
+    "onsite": 0,
+    "offer": 0,
+    "accepted": 0
+  },
+  "timeline": [],
+  "recent_activity": [],
+  "metadata": {
+    "created_at": "2026-05-07T00:00:00",
+    "updated_at": "2026-05-07T00:00:00"
+  }
+}

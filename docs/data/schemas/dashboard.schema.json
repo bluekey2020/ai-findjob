@@ -1,0 +1,11 @@
+{
+  "dashboard": {
+    "required_fields": ["stats", "timeline", "funnel"],
+    "fields": {
+      "stats": "{total_jobs_discovered:int,total_applied:int,total_interviews:int,total_offers:int,current_phase:str:0|1|2|3|4|5,days_active:int,avg_match_score:float}",
+      "funnel": "{discovered:int,screened:int,shortlisted:int,applied:int,phone_screen:int,technical:int,onsite:int,offer:int,accepted:int}",
+      "timeline": "list<{date:str,event:str:job_discovered|application_sent|interview_scheduled|interview_completed|offer_received|offer_accepted|offer_declined|rejection_received,company:str,role:str,detail:str}>",
+      "recent_activity": "list<{timestamp:str,action:str,description:str}>"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "agent_weights": {
+    "required_fields": ["agents", "feedback_log"],
+    "fields": {
+      "agents": "list<{agent_name:str,preference_vector:{dimension:str,weight:float},learning_rate:float,total_feedback_received:int,last_updated:str}>",
+      "feedback_log": "list<{timestamp:str,agent:str,feedback_type:str:positive|negative|modification,signal:str,old_behavior:str,new_behavior:str}>",
+      "global_learning_rate": "float"
+    }
+  }
+}

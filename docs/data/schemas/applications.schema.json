@@ -1,0 +1,10 @@
+{
+  "applications": {
+    "required_fields": ["applications"],
+    "fields": {
+      "applications": "list<{id:str,job_id:str,company:str,role:str,status:str:wishlist|applied|screening|interviewing|negotiating|offered|accepted|rejected|declined,resume_version:str,cover_letter_version:str,applied_date:str,last_contact_date:str,next_step:str,notes:str,events:list<{date:str,type:str,detail:str}>}>",
+      "stats": "{total:int,applied:int,interviewing:int,offered:int,rejected:int}",
+      "metadata": "{last_updated:str}"
+    }
+  }
+}

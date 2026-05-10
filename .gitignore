@@ -1,0 +1,13 @@
+# OMC state — local only
+.omc/
+
+# BMAD internal files
+_bmad/
+
+# BMAD output — large brainstorming artifacts
+_bmad-output/
+
+# Python
+__pycache__/
+*.pyc
+.venv/

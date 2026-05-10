@@ -1,0 +1,40 @@
+{
+  "language": "zh-CN",
+  "target_roles": [
+    "高级前端工程师",
+    "前端架构师"
+  ],
+  "target_regions": [
+    "深圳",
+    "远程"
+  ],
+  "salary_expectation": {
+    "amount": 40000,
+    "currency": "CNY",
+    "period": "monthly"
+  },
+  "city_preference": "深圳",
+  "willing_to_relocate": false,
+  "visa_status": "",
+  "company_size_preference": "mid",
+  "overtime_tolerance": "some",
+  "notice_period_days": 30,
+  "dealbreakers": [
+    "996文化",
+    "纯外包性质开发工作",
+    "技术决策完全由后端主导"
+  ],
+  "job_freshness_days": 14,
+  "preferred_platforms": [
+    "Boss直聘",
+    "拉勾",
+    "猎聘",
+    "脉脉"
+  ],
+  "dream_companies": [],
+  "timeline": "",
+  "metadata": {
+    "created_at": "2026-05-06T20:50:00",
+    "updated_at": "2026-05-06T21:33:27.373418"
+  }
+}
