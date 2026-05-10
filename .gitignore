@@ -11,3 +11,7 @@ _bmad-output/
 __pycache__/
 *.pyc
 .venv/
+
+# Environment
+.env
+*.db
