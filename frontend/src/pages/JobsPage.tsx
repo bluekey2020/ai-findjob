@@ -45,11 +45,26 @@ interface SearchResult {
   }
 }
 
+interface ApplyResult {
+  job_id: string
+  title: string
+  company: string
+  application: {
+    id: string
+    status: string
+    batch_number: number
+  }
+  tailored_resume?: Record<string, unknown>
+  cover_letter?: Record<string, unknown>
+}
+
 export default function JobsPage() {
   const queryClient = useQueryClient()
   const [filter, setFilter] = useState('all')
   const [showImport, setShowImport] = useState(false)
   const [importText, setImportText] = useState('')
+  const [applyingJob, setApplyingJob] = useState<string | null>(null)
+  const [applyResults, setApplyResults] = useState<Record<string, ApplyResult>>({})
 
   const { data, isLoading } = useQuery<Job[]>({
     queryKey: ['jobs'],
@@ -70,10 +85,15 @@ export default function JobsPage() {
     },
   })
 
-  const swipeMutation = useMutation({
-    mutationFn: ({ id, direction }: { id: string; direction: string }) =>
-      api.post(`/jobs/${id}/swipe`, { direction }),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['jobs'] }),
+  const applyMutation = useMutation<ApplyResult>({
+    mutationFn: (jobId: string) => api.post(`/jobs/${jobId}/apply`),
+    onSuccess: (result) => {
+      setApplyResults((prev) => ({ ...prev, [result.job_id]: result }))
+      setApplyingJob(null)
+      queryClient.invalidateQueries({ queryKey: ['jobs'] })
+      queryClient.invalidateQueries({ queryKey: ['applications'] })
+      queryClient.invalidateQueries({ queryKey: ['guide'] })
+    },
   })
 
   const handleImport = () => {
@@ -177,91 +197,140 @@ export default function JobsPage() {
       </div>
 
       {!filtered.length ? (
-        <p className="text-gray-500 text-center py-12">暂无职位数据，请先导入职位</p>
+        <p className="text-gray-500 text-center py-12">
+          {!data?.length ? '暂无职位数据，请先导入职位' : '没有匹配当前筛选条件的职位'}
+        </p>
       ) : (
         <div className="space-y-3">
-          {filtered.map((job) => (
-            <div key={job.id} className="bg-white rounded-lg shadow p-4 hover:shadow-md transition-shadow">
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <h3 className="font-semibold text-lg">{job.title}</h3>
-                    {job.fraud_score > 20 && (
-                      <span className="text-xs px-2 py-0.5 rounded bg-red-100 text-red-700">
-                        ⚠ 欺诈风险 {job.fraud_score}
-                      </span>
+          {filtered.map((job) => {
+            const isApplied = job.status === 'applied' || !!applyResults[job.id]
+            const isApplying = applyingJob === job.id
+            const result = applyResults[job.id]
+
+            return (
+              <div key={job.id} className={`bg-white rounded-lg shadow p-4 transition-shadow ${isApplied ? 'ring-1 ring-green-300' : 'hover:shadow-md'}`}>
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <h3 className="font-semibold text-lg">{job.title}</h3>
+                      {job.fraud_score > 20 && (
+                        <span className="text-xs px-2 py-0.5 rounded bg-red-100 text-red-700">
+                          ⚠ 欺诈风险 {job.fraud_score}
+                        </span>
+                      )}
+                      {job.dealbreaker_flags?.length > 0 && (
+                        <span className="text-xs px-2 py-0.5 rounded bg-red-200 text-red-800">
+                          Dealbreaker
+                        </span>
+                      )}
+                      {isApplied && (
+                        <span className="text-xs px-2 py-0.5 rounded bg-green-100 text-green-700">
+                          ✓ 已投递
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-sm text-gray-600">
+                      {job.company} · {job.location}{job.salary_range ? ` · ${job.salary_range}` : ''}
+                    </p>
+                    <p className="text-xs text-gray-400 mt-1">
+                      来源: {job.platform} · {job.source_type}
+                    </p>
+
+                    {job.match_breakdown && (
+                      <div className="mt-2 flex gap-4 text-xs text-gray-500">
+                        <span>JD匹配: {job.match_breakdown.jd_match}%</span>
+                        <span>偏好匹配: {job.match_breakdown.preference_match}%</span>
+                        <span>公司健康: {job.match_breakdown.company_health}%</span>
+                        <span>新鲜度: {job.match_breakdown.freshness}%</span>
+                      </div>
                     )}
-                    {job.dealbreaker_flags?.length > 0 && (
-                      <span className="text-xs px-2 py-0.5 rounded bg-red-200 text-red-800">
-                        Dealbreaker
-                      </span>
+
+                    {(job.match_reasons?.length > 0 || job.missing_skills?.length > 0) && (
+                      <div className="flex flex-wrap gap-1 mt-2">
+                        {job.match_reasons?.map((r) => (
+                          <span key={r} className="text-xs bg-green-50 text-green-700 px-2 py-0.5 rounded">
+                            ✓ {r}
+                          </span>
+                        ))}
+                        {job.missing_skills?.map((s) => (
+                          <span key={s} className="text-xs bg-red-50 text-red-600 px-2 py-0.5 rounded">
+                            ✗ {s}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+
+                    {job.fraud_flags?.length > 0 && (
+                      <div className="mt-2 space-y-1">
+                        {job.fraud_flags.map((flag, i) => (
+                          <p key={i} className="text-xs text-red-600">{flag}</p>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Apply result summary */}
+                    {result && (
+                      <div className="mt-3 p-3 bg-green-50 rounded-lg">
+                        <p className="text-sm font-medium text-green-800">
+                          ✓ 投递成功 — Batch #{result.application.batch_number}
+                        </p>
+                        {result.tailored_resume && (
+                          <p className="text-xs text-green-600 mt-1">定制简历已生成</p>
+                        )}
+                        {result.cover_letter && (
+                          <p className="text-xs text-green-600">求职信已生成</p>
+                        )}
+                      </div>
                     )}
                   </div>
-                  <p className="text-sm text-gray-600">
-                    {job.company} · {job.location}{job.salary_range ? ` · ${job.salary_range}` : ''}
-                  </p>
-                  <p className="text-xs text-gray-400 mt-1">
-                    来源: {job.platform} · {job.source_type}
-                  </p>
 
-                  {job.match_breakdown && (
-                    <div className="mt-2 flex gap-4 text-xs text-gray-500">
-                      <span>JD匹配: {job.match_breakdown.jd_match}%</span>
-                      <span>偏好匹配: {job.match_breakdown.preference_match}%</span>
-                      <span>公司健康: {job.match_breakdown.company_health}%</span>
-                      <span>新鲜度: {job.match_breakdown.freshness}%</span>
+                  <div className="flex flex-col items-end gap-2 ml-4">
+                    <div className="text-center">
+                      <p className="text-2xl font-bold text-indigo-600">{job.match_score}</p>
+                      <p className="text-xs text-gray-400">匹配分</p>
                     </div>
-                  )}
-
-                  {(job.match_reasons?.length > 0 || job.missing_skills?.length > 0) && (
-                    <div className="flex flex-wrap gap-1 mt-2">
-                      {job.match_reasons?.map((r) => (
-                        <span key={r} className="text-xs bg-green-50 text-green-700 px-2 py-0.5 rounded">
-                          ✓ {r}
-                        </span>
-                      ))}
-                      {job.missing_skills?.map((s) => (
-                        <span key={s} className="text-xs bg-red-50 text-red-600 px-2 py-0.5 rounded">
-                          ✗ {s}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-
-                  {job.fraud_flags?.length > 0 && (
-                    <div className="mt-2 space-y-1">
-                      {job.fraud_flags.map((flag, i) => (
-                        <p key={i} className="text-xs text-red-600">{flag}</p>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                <div className="flex flex-col items-end gap-2 ml-4">
-                  <div className="text-center">
-                    <p className="text-2xl font-bold text-indigo-600">{job.match_score}</p>
-                    <p className="text-xs text-gray-400">匹配分</p>
-                  </div>
-                  <div className="flex gap-1">
-                    <button
-                      onClick={() => swipeMutation.mutate({ id: job.id, direction: 'left' })}
-                      className="px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-100"
-                      title="跳过"
-                    >
-                      ← 跳过
-                    </button>
-                    <button
-                      onClick={() => swipeMutation.mutate({ id: job.id, direction: 'right' })}
-                      className="px-3 py-1 text-sm bg-indigo-600 text-white rounded hover:bg-indigo-700"
-                      title="感兴趣"
-                    >
-                      感兴趣 →
-                    </button>
+                    {!isApplied ? (
+                      <div className="flex gap-1">
+                        <button
+                          onClick={() => api.put(`/jobs/${job.id}`, { status: 'skipped' }).then(() => {
+                            queryClient.invalidateQueries({ queryKey: ['jobs'] })
+                          })}
+                          className="px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-100"
+                        >
+                          跳过
+                        </button>
+                        <button
+                          onClick={() => {
+                            setApplyingJob(job.id)
+                            applyMutation.mutate(job.id)
+                          }}
+                          disabled={isApplying}
+                          className="px-4 py-1.5 text-sm bg-indigo-600 text-white rounded hover:bg-indigo-700 disabled:opacity-50"
+                        >
+                          {isApplying ? '投递中...' : '投递 →'}
+                        </button>
+                      </div>
+                    ) : (
+                      <span className="text-sm text-green-600 font-medium">已投递</span>
+                    )}
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
+        </div>
+      )}
+
+      {/* Applying overlay */}
+      {applyingJob && (
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl shadow-xl p-8 max-w-md w-full text-center">
+            <div className="animate-spin text-4xl mb-4">⏳</div>
+            <h3 className="text-lg font-semibold mb-2">正在投递...</h3>
+            <p className="text-sm text-gray-500">
+              AI 正在为该职位定制简历和求职信，请稍候
+            </p>
+          </div>
         </div>
       )}
     </div>

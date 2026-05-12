@@ -133,6 +133,110 @@ async def advance_phase(db: AsyncSession, user_id: str) -> dict:
   }
 
 
+async def try_auto_advance(db: AsyncSession, user_id: str) -> dict:
+  """Try to auto-advance phase based on completed prerequisites. Call after key actions."""
+  current = await get_current_phase(db, user_id)
+  if current >= 5:
+    return {'advanced': False, 'current_phase': current, 'reason': 'Already at max phase'}
+
+  met, missing = await check_phase_requirements(db, user_id, current)
+  if not met:
+    return {'advanced': False, 'current_phase': current, 'reason': f'Phase {current} not complete: {missing}'}
+
+  new_phase = current + 1
+  await set_phase(db, user_id, new_phase)
+  pd = get_phase_info(new_phase)
+  return {
+    'advanced': True,
+    'previous_phase': current,
+    'current_phase': new_phase,
+    'phase_name': pd.name if pd else 'Unknown',
+  }
+
+
+DEMO_STEPS = [
+  {'step': 1, 'name': '注册账号', 'icon': 'user-plus', 'route': '/register', 'api': 'POST /api/v1/auth/register'},
+  {'step': 2, 'name': '提交简历', 'icon': 'upload', 'route': '/profile', 'api': 'POST /api/v1/profile/analyze'},
+  {'step': 3, 'name': 'AI 画像分析', 'icon': 'cpu', 'route': '/profile', 'api': 'GET /api/v1/profile'},
+  {'step': 4, 'name': '职位匹配', 'icon': 'search', 'route': '/jobs', 'api': 'POST /api/v1/jobs/search'},
+  {'step': 5, 'name': '定制投递', 'icon': 'send', 'route': '/jobs', 'api': 'POST /api/v1/jobs/{id}/apply'},
+  {'step': 6, 'name': '面试 Offer', 'icon': 'trophy', 'route': '/interviews', 'api': 'POST /api/v1/interviews/prep'},
+]
+
+
+async def get_demo_guide(db: AsyncSession, user_id: str) -> dict:
+  """Return 6-step demo flow status with next action hints."""
+  from app.models.profile import Profile
+  from app.models.preferences import Preferences
+  from app.models.job import Job
+  from app.models.application import Application
+
+  phase = await get_current_phase(db, user_id)
+
+  r = await db.execute(select(Profile).where(Profile.user_id == user_id))
+  has_profile = r.scalar_one_or_none() is not None
+
+  r = await db.execute(select(Preferences).where(Preferences.user_id == user_id))
+  has_prefs = r.scalar_one_or_none() is not None
+
+  r = await db.execute(select(Job).where(Job.user_id == user_id))
+  has_jobs = r.scalars().first() is not None
+
+  r = await db.execute(select(Job).where(Job.user_id == user_id, Job.match_score > 0))
+  has_scored = r.scalars().first() is not None
+
+  r = await db.execute(select(Application).where(Application.user_id == user_id))
+  has_apps = r.scalars().first() is not None
+
+  r = await db.execute(select(Application).where(
+    Application.user_id == user_id,
+    Application.status.in_(['phone_screen', 'onsite', 'offer'])
+  ))
+  has_interviews = r.scalars().first() is not None
+
+  r = await db.execute(select(Application).where(
+    Application.user_id == user_id,
+    Application.status.in_(['offer', 'accepted'])
+  ))
+  has_offers = r.scalars().first() is not None
+
+  steps_status = [
+    {'step': 1, 'name': '注册账号', 'done': True},
+    {'step': 2, 'name': '提交简历', 'done': has_profile},
+    {'step': 3, 'name': 'AI 画像分析', 'done': has_profile and bool(has_prefs)},
+    {'step': 4, 'name': '职位搜索匹配', 'done': has_scored},
+    {'step': 5, 'name': '定制投递', 'done': has_apps},
+    {'step': 6, 'name': '面试 Offer', 'done': has_interviews or has_offers},
+  ]
+
+  current_step = 1
+  for s in steps_status:
+    if s['done']:
+      current_step = s['step'] + 1
+    else:
+      current_step = s['step']
+      break
+
+  next_action = None
+  if current_step <= 6:
+    step_info = DEMO_STEPS[current_step - 1]
+    next_action = {
+      'step': current_step,
+      'name': step_info['name'],
+      'api': step_info['api'],
+      'route': step_info['route'],
+    }
+
+  return {
+    'current_phase': phase,
+    'current_step': min(current_step, 6),
+    'progress_pct': round(sum(1 for s in steps_status if s['done']) / 6 * 100),
+    'steps': steps_status,
+    'next_action': next_action,
+    'has_offers': has_offers,
+  }
+
+
 async def get_feedback_loop_status(db: AsyncSession, user_id: str) -> dict:
   """Query which feedback loops are active and their state."""
   from app.models.tracking import FeedbackEvent

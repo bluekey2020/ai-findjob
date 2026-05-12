@@ -6,7 +6,7 @@ from app.core.deps import get_current_user
 from app.models.user import User
 from app.engine.state_machine import (
   get_current_phase, advance_phase, get_phase_info,
-  get_feedback_loop_status, PHASES
+  get_feedback_loop_status, get_demo_guide, PHASES
 )
 
 router = APIRouter(prefix='/api/v1/phases', tags=['phases'])
@@ -47,6 +47,15 @@ async def feedback_loops(
   db: AsyncSession = Depends(get_db)
 ):
   return await get_feedback_loop_status(db, current_user.id)
+
+
+@router.get('/guide')
+async def demo_guide(
+  current_user: User = Depends(get_current_user),
+  db: AsyncSession = Depends(get_db)
+):
+  """6-step demo flow guide — shows what's done and what to do next."""
+  return await get_demo_guide(db, current_user.id)
 
 
 @router.post('/feedback-loops/process')

@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
+import { useNavigate } from 'react-router-dom'
 import { api } from '../lib/api'
 
 interface Achievement {
@@ -26,6 +27,28 @@ interface Dashboard {
   timeline: TimelineEntry[]
 }
 
+interface StepStatus {
+  step: number
+  name: string
+  done: boolean
+}
+
+interface NextAction {
+  step: number
+  name: string
+  api: string
+  route: string
+}
+
+interface Guide {
+  current_phase: number
+  current_step: number
+  progress_pct: number
+  steps: StepStatus[]
+  next_action: NextAction | null
+  has_offers: boolean
+}
+
 const MOOD_EMOJI: Record<string, string> = {
   excited: '🤩',
   confident: '😎',
@@ -34,11 +57,28 @@ const MOOD_EMOJI: Record<string, string> = {
   frustrated: '😤',
 }
 
+const STEP_ROUTES: Record<number, string> = {
+  1: '/profile',
+  2: '/profile',
+  3: '/profile',
+  4: '/jobs',
+  5: '/jobs',
+  6: '/interviews',
+}
+
 export default function DashboardPage() {
+  const navigate = useNavigate()
+
   const { data, isLoading } = useQuery<Dashboard>({
     queryKey: ['dashboard'],
     queryFn: () => api.get('/dashboard'),
     refetchInterval: 30000,
+  })
+
+  const { data: guide } = useQuery<Guide>({
+    queryKey: ['guide'],
+    queryFn: () => api.get('/phases/guide'),
+    refetchInterval: 15000,
   })
 
   if (isLoading) return <p className="text-gray-500">加载中...</p>
@@ -47,6 +87,78 @@ export default function DashboardPage() {
 
   return (
     <div>
+      {/* 6-step demo flow wizard */}
+      {guide && (
+        <div className="bg-white rounded-lg shadow p-6 mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-semibold">求职进度</h3>
+            <span className="text-sm text-indigo-600 font-medium">{guide.progress_pct}%</span>
+          </div>
+
+          {/* Progress bar */}
+          <div className="w-full bg-gray-100 rounded-full h-2 mb-6">
+            <div
+              className="bg-indigo-500 rounded-full h-2 transition-all duration-500"
+              style={{ width: `${guide.progress_pct}%` }}
+            />
+          </div>
+
+          {/* Steps */}
+          <div className="grid grid-cols-6 gap-2">
+            {guide.steps.map((s) => {
+              const isCurrent = s.step === guide.current_step
+              const isDone = s.done
+              return (
+                <button
+                  key={s.step}
+                  onClick={() => navigate(STEP_ROUTES[s.step])}
+                  className={`flex flex-col items-center p-3 rounded-lg transition-colors text-center ${
+                    isCurrent
+                      ? 'bg-indigo-50 ring-2 ring-indigo-300'
+                      : isDone
+                        ? 'bg-green-50 hover:bg-green-100'
+                        : 'bg-gray-50 opacity-50'
+                  }`}
+                >
+                  <span className="text-lg mb-1">
+                    {isDone ? '✓' : isCurrent ? '→' : '○'}
+                  </span>
+                  <span className={`text-xs font-medium ${
+                    isCurrent ? 'text-indigo-700' : isDone ? 'text-green-700' : 'text-gray-400'
+                  }`}>
+                    {s.step}
+                  </span>
+                  <span className={`text-xs mt-0.5 ${
+                    isCurrent ? 'text-indigo-600 font-medium' : 'text-gray-500'
+                  }`}>
+                    {s.name}
+                  </span>
+                </button>
+              )
+            })}
+          </div>
+
+          {/* Next action hint */}
+          {guide.next_action && (
+            <div className="mt-4 p-3 bg-indigo-50 rounded-lg flex items-center justify-between">
+              <div>
+                <span className="text-xs text-indigo-500">下一步</span>
+                <p className="text-sm font-medium text-indigo-700">
+                  Step {guide.next_action.step}: {guide.next_action.name}
+                </p>
+                <code className="text-xs text-indigo-400 mt-0.5 block">{guide.next_action.api}</code>
+              </div>
+              <button
+                onClick={() => navigate(guide.next_action!.route)}
+                className="px-4 py-2 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+              >
+                前往
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+
       <h2 className="text-2xl font-bold mb-6">求职仪表盘</h2>
 
       <div className="grid grid-cols-5 gap-4 mb-8">

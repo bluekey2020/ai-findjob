@@ -169,13 +169,9 @@ def _compute_bidirectional_match(job: dict, context: dict) -> dict:
 
   if prefs:
     # Salary match
-    if prefs.salary_expectation and job.get('salary_range'):
+    if prefs.salary_amount and job.get('salary_range'):
       try:
-        exp = prefs.salary_expectation
-        if isinstance(exp, dict):
-          exp_min = exp.get('min', 0) or 0
-        else:
-          exp_min = 0
+        exp_min = prefs.salary_amount
         salary_str = str(job['salary_range']).lower().replace('k', '000')
         # Extract numbers from salary string
         import re
@@ -192,9 +188,9 @@ def _compute_bidirectional_match(job: dict, context: dict) -> dict:
         pass
 
     # Location match
-    if prefs.target_locations and job.get('location'):
+    if prefs.target_regions and job.get('location'):
       job_loc = job['location'].lower()
-      for target in prefs.target_locations:
+      for target in prefs.target_regions:
         target_lower = (target if isinstance(target, str) else target.get('city', '')).lower()
         if target_lower and target_lower in job_loc:
           pref_score = min(100, pref_score + 15)

@@ -34,7 +34,22 @@
       "Bash(python -c \"from app.main import app; print\\('FastAPI app loaded successfully'\\); print\\('Routes:'\\); [print\\(f'  {r.methods} {r.path}'\\) for r in app.routes if hasattr\\(r, 'methods'\\)]\")",
       "Bash(python -c \"from app.main import app; print\\(f'OK: {len\\([r for r in app.routes if hasattr\\(r,\\\\\"methods\\\\\"\\)]\\)} endpoints loaded'\\)\")",
       "Bash(timeout 8 python -m uvicorn app.main:app --host 0.0.0.0 --port 8000)",
-      "Bash(python F:/claude/aijob/scripts/data-layer.py)"
+      "Bash(python F:/claude/aijob/scripts/data-layer.py)",
+      "Bash(gh repo *)",
+      "Bash(python -c \"from app.engine.state_machine import try_auto_advance, get_demo_guide; print\\('state_machine OK'\\)\")",
+      "Bash(python -c \"from app.api.jobs import router; print\\('jobs router OK'\\)\")",
+      "Bash(python -c \"from app.api.phases import router; print\\('phases router OK'\\)\")",
+      "Bash(python -c \"from app.main import app; print\\('All routes:'\\); [print\\(f'  {r.methods} {r.path}'\\) for r in app.routes if hasattr\\(r, 'methods'\\)]\")",
+      "Bash(python -m pytest tests/ -v --tb=short)",
+      "Bash(docker compose *)",
+      "Bash(DATABASE_URL=sqlite+aiosqlite:///./data/app.db JWT_SECRET_KEY=dev-secret ANTHROPIC_API_KEY=test-key python -m uvicorn app.main:app --host 0.0.0.0 --port 8000)",
+      "Bash(python scripts/demo_flow_test.py)",
+      "Bash(PYTHONIOENCODING=utf-8 python scripts/demo_flow_test.py)",
+      "Bash(netstat -ano)",
+      "Bash(taskkill //PID 39104 //F)",
+      "Bash(rm -f data/app.db)",
+      "Bash(mkdir -p data)",
+      "Bash(taskkill *)"
     ]
   }
 }

@@ -114,6 +114,7 @@ async def create_application(
       batch_number=batch,
     )
     db.add(app)
+    await db.flush()  # populate app.id before creating child events
 
     # Add initial event
     event = ApplicationEvent(

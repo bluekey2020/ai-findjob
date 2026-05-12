@@ -121,3 +121,51 @@ async def swipe_job(
   await db.refresh(job)
 
   return {'id': job.id, 'title': job.title, 'company': job.company, 'status': job.status}
+
+
+@router.post('/{job_id}/apply')
+async def apply_to_job(
+  job_id: str,
+  current_user: User = Depends(get_current_user),
+  db: AsyncSession = Depends(get_db)
+):
+  """Composite apply: create application + tailor resume + generate cover letter."""
+  from app.services.application import create_application
+  from app.services.resume_generation import generate_tailored_resume
+  from app.services.cover_letter import generate_cover_letter
+  from app.engine.state_machine import try_auto_advance
+
+  job_result = await db.execute(
+    select(Job).where(Job.id == job_id, Job.user_id == current_user.id)
+  )
+  job = job_result.scalar_one_or_none()
+  if not job:
+    raise HTTPException(status_code=404, detail='Job not found')
+
+  results = {'job_id': job_id, 'title': job.title, 'company': job.company}
+
+  app_result = await create_application(current_user.id, job_id)
+  if 'error' in app_result:
+    raise HTTPException(status_code=400, detail=app_result['error'])
+  results['application'] = app_result
+
+  try:
+    resume_result = await generate_tailored_resume(current_user.id, job_id)
+    if 'error' not in resume_result:
+      results['tailored_resume'] = resume_result.get('resume')
+  except Exception:
+    results['tailored_resume'] = None
+
+  try:
+    cover_result = await generate_cover_letter(current_user.id, job_id)
+    if 'error' not in cover_result:
+      results['cover_letter'] = cover_result.get('cover_letter')
+  except Exception:
+    results['cover_letter'] = None
+
+  job.status = 'applied'
+  await db.commit()
+
+  await try_auto_advance(db, current_user.id)
+
+  return results
